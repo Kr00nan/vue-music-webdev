@@ -7,36 +7,34 @@
 </template>
 
 <script>
-import MyTunes from './MyTunes.vue'
-import Itunes from './Itunes.vue'
-export default {
-  name: 'home',
-  data () {
-    return {
-      
+  import MyTunes from './MyTunes.vue'
+  import Itunes from './Itunes.vue'
+  export default {
+    name: 'home',
+    data () {
+      return {
+        
+      }
+    },
+    components: {
+      Itunes,
+      MyTunes
     }
-  },
-  components: {
-    Itunes,
-    MyTunes
   }
-}
 </script>
 
-
 <style>
-.my-tunes{
-  display: inline-block;
-  min-height: 98vh;
-  min-width: 50%;
-  background: green;
-}
+  .my-tunes{
+    display: inline-block;
+    min-height: 98vh;
+    min-width: 50%;
+    background: green;
+  }
 
-.itunes{
-  display: inline-block;
-  background: red;
-  min-height: 98vh;
-  min-width: 45%;
-}
-
+  .itunes{
+    display: inline-block;
+    background: red;
+    min-height: 98vh;
+    min-width: 45%;
+  }
 </style>

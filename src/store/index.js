@@ -33,6 +33,9 @@ var store = new vuex.Store({
   mutations: {
     setItunes(state, itunes){
       state.itunes = itunes
+    },
+    setUser(){
+      state.user = user
     }
   },
   actions: {
@@ -42,7 +45,7 @@ var store = new vuex.Store({
         console.log(res)
         commit('setItunes', res.data.results)
       })
-      .catch(err=>{
+      .catch(err => {
         console.error(err)
       })
     },
@@ -65,21 +68,53 @@ var store = new vuex.Store({
     //USER AUTHENTICATION AREA
     login({commit, dispatch}, user){
       //make a post request to the login location on the auth server with the user
-      
+      auth.post('login', user)
+        .then(res => {
+          commit('setUser', res.data.user)
+          router.push("/home")
+        })
+        .catch(err => {
+          console.error(err);
+        })
     },
     register({commit, dispatch}, user){
       //make a post request to the register location on the auth server
       //with the user from the auth component
       auth.post('register', user)
-      .then(res=>{
+      .then(res => {
         console.log(res.data.message)
         //add the user to our store
-        commit('setUser', res.data.user)
+        commit('setUser', res.data.user);
+        router.push("/home");
       })
       .catch(err=>{
-        console.error(err)
+        console.error(err);
       })
-    }
+    },
+    authenticate({dispatch, commit}, user){
+      auth.get('authenticate')
+          .then(res => {
+              console.log(res.data.message)
+              commit('setUser', response.data)
+              router.push("/home")
+          })
+          .catch(err => {
+              console.error(err);
+              router.push('/');
+          })
+  },
+  logout({dispatch, commit}){
+      auth.delete('logout')
+          .then(res => {
+              console.log(res.data.message)
+              commit('setUser', {})
+              router.push("/")
+          })
+          .catch(err => {
+              console.error(err);
+          })
+  }      
+
   }
 })
 

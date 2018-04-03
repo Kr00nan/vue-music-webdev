@@ -7,7 +7,7 @@
             <label for="password">Password</label>
             <input type="password" name="password" id="password" v-model="user.password">
             <p>Not a user?
-                <em @click="toggle">Register</em>
+                <em @click="toggle" class="clickable">Register</em>
             </p>
         </div>
         <div class="register" v-if="!showLogin">
@@ -18,9 +18,9 @@
             <input type="text" name="email" id="email" v-model="user.email">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" v-model="user.password">
-            <button @click="register">Register</button>            
+            <button @click="register" class="clickable">Register</button>            
             <p>Already a user?
-                <em @click="toggle">Login</em>
+                <em @click="toggle" class="clickable">Login</em>
             </p>
         </div>
     </div>
@@ -44,6 +44,11 @@
             },
             register(){
                 this.$store.dispatch('register', this.user)
+                this.user = {}
+            },
+            login(){
+                this.$store.dispatch('login', this.user)
+                this.user = {}
             }
         },
         components: {}
@@ -52,4 +57,7 @@
 
 
 <style scoped>
+    .clickable:hover {
+        cursor: pointer;
+    }
 </style>
