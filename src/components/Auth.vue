@@ -6,6 +6,7 @@
             <input type="text" name="email" id="email" v-model="user.email">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" v-model="user.password">
+            <button v-on:click="login">Login</button>
             <p>Not a user?
                 <em @click="toggle" class="clickable">Register</em>
             </p>
@@ -33,7 +34,8 @@
         data() {
             return {
                 user: {},
-                showLogin: true
+                showLogin: true,
+                user: {}
             }
         },
         computed: {},

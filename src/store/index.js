@@ -1,20 +1,21 @@
 import vue from 'vue'
 import vuex from 'vuex'
 import axios from 'axios'
+import router from '@/router'
 
 vue.use(vuex)
+
+//The location of the basic api resources on our server
+let api = axios.create({
+  baseURL: '//night-class-server.herokuapp.com/api',
+  timeout: 1000,
+  withCredentials: true
+})
 
 //The location of the authentication resources on our server
 let auth = axios.create({
   baseURL: '//night-class-server.herokuapp.com/auth',
   // baseURL: '//localhost:3000/auth',
-  timeout: 1000,
-  withCredentials: true
-})
-
-//The location of the basic api resources on our server
-let api = axios.create({
-  baseURL: '//night-class-server.herokuapp.com/api',
   timeout: 1000,
   withCredentials: true
 })
@@ -34,14 +35,15 @@ var store = new vuex.Store({
     setItunes(state, itunes){
       state.itunes = itunes
     },
-    setUser(){
+    setUser(state, user){
       state.user = user
     }
   },
   actions: {
     //this one is working for you, check out your state.itunes
     getMusicByArtist({commit, dispatch}, artist) {
-      itunes.get('search?term='+artist).then(res=>{
+      itunes.get('search?term='+ artist)
+      .then(res=>{
         console.log(res)
         commit('setItunes', res.data.results)
       })
@@ -64,46 +66,46 @@ var store = new vuex.Store({
     demoteTrack({commit, dispatch}, track){
       //this should decrease the position / upvotes and downvotes on the track
     },
-
     //USER AUTHENTICATION AREA
     login({commit, dispatch}, user){
       //make a post request to the login location on the auth server with the user
       auth.post('login', user)
-        .then(res => {
-          commit('setUser', res.data.user)
-          router.push("/home")
-        })
-        .catch(err => {
-          console.error(err);
-        })
+      .then(res => {
+        console.log(res.data.message)
+        commit('setUser', res.data.user)
+        router.push("/home")
+      })
+      .catch(err => {
+        console.error(err);
+      })
     },
     register({commit, dispatch}, user){
       //make a post request to the register location on the auth server
       //with the user from the auth component
       auth.post('register', user)
       .then(res => {
-        console.log(res.data.message)
+        console.log(res.data.message);
         //add the user to our store
         commit('setUser', res.data.user);
         router.push("/home");
       })
-      .catch(err=>{
-        console.error(err);
+        .catch(err => {
+          console.error(err);
       })
     },
     authenticate({dispatch, commit}, user){
       auth.get('authenticate')
-          .then(res => {
-              console.log(res.data.message)
-              commit('setUser', response.data)
-              router.push("/home")
-          })
-          .catch(err => {
-              console.error(err);
-              router.push('/');
-          })
-  },
-  logout({dispatch, commit}){
+      .then(res => {
+          console.log(res.data.message)
+          commit('setUser', res.data)
+          router.push("/home")
+      })
+        .catch(err => {
+          console.error(err)
+          router.push('/')
+      })
+    },
+    logout({dispatch, commit}){
       auth.delete('logout')
           .then(res => {
               console.log(res.data.message)
@@ -113,7 +115,7 @@ var store = new vuex.Store({
           .catch(err => {
               console.error(err);
           })
-  }      
+    }      
 
   }
 })
