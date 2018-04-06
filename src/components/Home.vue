@@ -1,8 +1,14 @@
 <template>
   <div class="home">
     <!-- YOU WILL PROBABLY END UP WITH SOMETHING LIKE THIS -->
-    <itunes class="itunes"></itunes>
-    <my-tunes class="my-tunes"></my-tunes>
+    <div class="row">
+      <div class="col-6">
+        <itunes></itunes>
+      </div>
+      <div class="col-6">
+        <my-tunes></my-tunes>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,16 +31,16 @@
 
 <style>
   .my-tunes{
+    background: green;
     display: inline-block;
     min-height: 98vh;
-    min-width: 50%;
-    background: green;
+    min-width: 100%;
   }
 
   .itunes{
-    display: inline-block;
     background: red;
+    display: inline-block;
     min-height: 98vh;
-    min-width: 45%;
+    min-width: 100%;
   }
 </style>

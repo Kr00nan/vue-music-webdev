@@ -1,7 +1,7 @@
 import vue from 'vue'
 import vuex from 'vuex'
 import axios from 'axios'
-import router from '@/router'
+import router from '../router'
 
 vue.use(vuex)
 
@@ -42,10 +42,19 @@ var store = new vuex.Store({
   actions: {
     //this one is working for you, check out your state.itunes
     getMusicByArtist({commit, dispatch}, artist) {
-      itunes.get('search?term='+ artist)
-      .then(res=>{
+      itunes.get('search?term='+ artist + '&media=music')
+      .then(res => {
+        var songList = res.data.results.map(song => {
+          return {
+            artistName: song.artistName,
+            trackName: song.trackName,
+            previewUrl: song.previewUrl,
+            artworkUrl100: song.artworkUrl100,
+            price: song.trackPrice
+          }
+        });
         console.log(res)
-        commit('setItunes', res.data.results)
+        commit("setItunes", songList)
       })
       .catch(err => {
         console.error(err)
@@ -96,13 +105,13 @@ var store = new vuex.Store({
     authenticate({dispatch, commit}, user){
       auth.get('authenticate')
       .then(res => {
-          console.log(res.data.message)
+          // console.log(res.data.message)
           commit('setUser', res.data)
           router.push("/home")
       })
         .catch(err => {
-          console.error(err)
-          router.push('/')
+          console.error(err);
+          router.push('/');
       })
     },
     logout({dispatch, commit}){
