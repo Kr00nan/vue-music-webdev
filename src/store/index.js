@@ -29,18 +29,22 @@ let itunes = axios.create({
 var store = new vuex.Store({
   state: {
     myTunes: [],
-    itunes: []
+    itunes: [],
+    user: {}
   },
   mutations: {
     setItunes(state, itunes){
-      state.itunes = itunes
+      // state.itunes = itunes;
+      vue.set(state, "itunes", itunes)
+    },
+    setMyTunes(state, myTunes){
+      state.myTunes = myTunes
     },
     setUser(state, user){
       state.user = user
     }
   },
   actions: {
-    //this one is working for you, check out your state.itunes
     getMusicByArtist({commit, dispatch}, artist) {
       itunes.get('search?term='+ artist + '&media=music')
       .then(res => {
@@ -60,22 +64,54 @@ var store = new vuex.Store({
         console.error(err)
       })
     },
-    getMyTunes({commit, dispatch}){
-      //this should send a get request to your server to return the list of saved tunes
+    getMyTunes({commit, dispatch}, userId){
+      api.get('/tracks', userId)
+      .then(res => {
+        console.log(res.data.message);
+        commit('setMyTunes', res.data.data);
+      })
+      .catch(err => {
+        console.error(err);
+      })
     },
-    addToMyTunes({commit, dispatch}, track){
-      //this will post to your server adding a new track to your tunes
+    addToMyTunes({commit, dispatch}, song){
+      api.post('/tracks', song)
+      .then(res => {
+        dispatch('getMyTunes');
+      })
+      .catch(err =>{
+        console.error(err);
+      })
     },
-    removeTrack({commit, dispatch}, track){
-      //Removes track from the database with delete
+    removeTrack({commit, dispatch}, trackId){
+      api.delete('/tracks/' + trackId)
+      .then(res => {
+        dispatch('getMyTunes');
+      })
+      .catch(err => {
+        console.error(err);
+      })
     },
     promoteTrack({commit, dispatch}, track){
-      //this should increase the position / upvotes and downvotes on the track
+      api.put('/tracks/' + track._id, track)
+      .then(res => {
+        console.log(res.data);
+        dispatch('getMyTunes');
+      })
+      .catch(err => {
+        console.error(err);
+      })
     },
     demoteTrack({commit, dispatch}, track){
-      //this should decrease the position / upvotes and downvotes on the track
+      api.put('/tracks/' + track._id, track)
+      .then(res => {
+        console.log(res.data);
+        dispatch('getMyTunes');
+      })
+      .catch(err => {
+        console.error(err);
+      })
     },
-    //USER AUTHENTICATION AREA
     login({commit, dispatch}, user){
       //make a post request to the login location on the auth server with the user
       auth.post('login', user)
@@ -105,9 +141,9 @@ var store = new vuex.Store({
     authenticate({dispatch, commit}, user){
       auth.get('authenticate')
       .then(res => {
-          // console.log(res.data.message)
-          commit('setUser', res.data)
-          router.push("/home")
+        console.log(res.data.message)
+        commit('setUser', res.data)
+        router.push("/home")
       })
         .catch(err => {
           console.error(err);
@@ -116,14 +152,14 @@ var store = new vuex.Store({
     },
     logout({dispatch, commit}){
       auth.delete('logout')
-          .then(res => {
-              console.log(res.data.message)
-              commit('setUser', {})
-              router.push("/")
-          })
-          .catch(err => {
-              console.error(err);
-          })
+        .then(res => {
+          console.log(res.data.message)
+          commit('setUser', {})
+          router.push("/")
+        })
+        .catch(err => {
+            console.error(err);
+        })
     }      
 
   }

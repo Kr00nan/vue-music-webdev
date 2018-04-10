@@ -6,7 +6,7 @@
             <input type="text" name="email" id="email" v-model="user.email">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" v-model="user.password">
-            <button v-on:click="login">Login</button>
+            <button v-on:click="login" class="btn btn-info">Login</button>
             <p>Not a user?
                 <em @click="toggle" class="clickable">Register</em>
             </p>
@@ -19,7 +19,7 @@
             <input type="text" name="email" id="email" v-model="user.email">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" v-model="user.password">
-            <button @click="register" class="clickable">Register</button>            
+            <button @click="register" class="btn btn-success">Register</button>            
             <p>Already a user?
                 <em @click="toggle" class="clickable">Login</em>
             </p>
@@ -34,8 +34,7 @@
         data() {
             return {
                 user: {},
-                showLogin: true,
-                user: {}
+                showLogin: true
             }
         },
         computed: {},
