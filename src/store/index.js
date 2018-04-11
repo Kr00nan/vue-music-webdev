@@ -34,10 +34,12 @@ var store = new vuex.Store({
   },
   mutations: {
     setItunes(state, itunes){
-      // state.itunes = itunes;
-      vue.set(state, "itunes", itunes)
+      state.itunes = itunes
     },
     setMyTunes(state, myTunes){
+      myTunes.sort(function(a, b) {
+        return b.likes - a.likes;
+      });
       state.myTunes = myTunes
     },
     setUser(state, user){

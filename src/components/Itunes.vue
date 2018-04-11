@@ -7,19 +7,7 @@
             <button v-on:click="logout" class="btn btn-info">Logout</button>
             <div id="songs">
                 <div v-for="song in itunes">
-                    <div class="card bg-light mb-3">
-                        <div class="card-body">
-                            <div>
-                                <img :src="song.artworkUrl100" alt="album artwork">
-                            </div>
-                            <h5 class="card-title">{{ song.trackName }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Artist: {{ song.artistName }}</h6>
-                            <audio controls id="song.trackId">
-                                <source :src=song.previewUrl>
-                            </audio>
-                            <button v-on:click="addTrack(song)" class="btn float-right">Add track</button>
-                        </div>
-                    </div>
+                    <song :songProp="song"></song>
                 </div>
             </div>
         </div>
@@ -27,14 +15,13 @@
 </template>
 
 <script>
-// import Song from './Song'
+    import Song from './Song'
 
 export default {
     name: 'iTunes',
     data () {
         return {
-            artist: "",
-            showAdd: true
+            artist: ""
         }
     },
     mounted() {
@@ -57,8 +44,8 @@ export default {
             return this.$store.state.itunes
         }
     },
-    component: {
-        
+    components: {
+        Song
     }
 }
 

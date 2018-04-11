@@ -8,10 +8,14 @@
                         <h6 class="float-right">Song # {{index + 1}}</h6>
                         <h5 class="card-title">{{ song.trackName }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Artist: {{ song.artistName }}</h6>
+                        <div>
                         <audio controls preload="auto" id="song.trackId">
                             <source :src=song.previewUrl>
-                        </audio>
-                        <button v-on:click="removeTrack(song._id)" class="btn float-right border">Remove</button>
+                        </audio></div>
+                        <button class="float-left" v-on:click="promoteTrack(song)">^</button>
+                        <button class="float-left" v-on:click="demoteTrack(song)">v</button>
+                        <!-- <span>{{song.likes}}</span> -->
+                        <button v-on:click="removeTrack(song._id)" class="btn float-right">Remove</button>
                     </div>
                 </div>
             </div>
@@ -28,16 +32,24 @@ export default {
         }
     },
     mounted(){
-        this.$store.dispatch('getMyTunes')
+        this.$store.dispatch('getMyTunes');
     },
     methods: {
         removeTrack(id){
             this.$store.dispatch('removeTrack', id);
+        },
+        promoteTrack(song){
+            song.likes++;
+            this.$store.dispatch('promoteTrack', song);
+        },
+        demoteTrack(song){
+            song.likes--;
+            this.$store.dispatch('demoteTrack', song);
         }
     },
     computed: {
         mytunes(){
-            return this.$store.state.myTunes
+            return this.$store.state.myTunes;
         }
     }
 }
