@@ -30,6 +30,8 @@
     padding-right: 15px;
   }
   body {
-    background-color: rgb(213, 213, 226);
+    background-color: rgb(168, 179, 216);
+    padding-left: 24px;
   }
+
 </style>
