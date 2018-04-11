@@ -1,11 +1,12 @@
 <template>
     <div class="my-tunes">
         <div class="container">
-        <h1> List of MyTunes</h1>
+        <h1> List of MyTunes (sorted by likes)</h1>
         <div v-for="(song, index) in mytunes">
                 <div class="card bg-light mb-3">
                     <div class="card-body">
-                        <h6 class="float-right">Song # {{index + 1}}</h6>
+                        <!-- <h6 class="float-right"> Song # {{index + 1}}</h6> -->
+                        <h6 class="float-right">Likes: {{song.likes}} </h6>
                         <h5 class="card-title">{{ song.trackName }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Artist: {{ song.artistName }}</h6>
                         <div>
